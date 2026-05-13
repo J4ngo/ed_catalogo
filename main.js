@@ -1,3 +1,11 @@
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+      .then(reg => console.log('Service Worker registrado', reg))
+      .catch(err => console.log('Error al registrar SW', err));
+  });
+}
+
 const appContainer = document.getElementById('app-container');
 let productosActuales = [];
 let indiceActual = 0;
