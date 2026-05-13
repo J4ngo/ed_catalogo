@@ -1,0 +1,209 @@
+/* --- ESTILOS GENERALES Y RESET --- */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body { 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow: hidden;
+    background-color: white;
+}
+
+#app-container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.5s ease;
+}
+
+/* --- ESTILOS DE LA VISTA INICIO --- */
+.vista {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    transition: all 0.5s ease;
+}
+
+.oculto { display: none !important; }
+
+/* Gestión de los Logos */
+#logo-container {
+    position: relative;
+    margin-bottom: 40px;
+}
+
+.logo-grande {
+    display: none;
+    height: auto;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.logo-grande.active {
+    display: block;
+    opacity: 1;
+}
+
+.logo-v.active { width: 350px; }
+
+/* Menú de Categorías (CORREGIDO: usando . en lugar de #) */
+.menu-categorias {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0px;
+    width: 98%;
+    max-width: 1200px; /* Aumentado para que respire */
+    transition: all 0.5s ease;
+}
+
+.menu-categorias button {
+    flex: 1;
+    padding: 20px 25px;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    color: #333;
+    position: relative;
+    display: flex;  
+    justify-content: center;
+    align-items: center;    
+    transition: all 0.3s ease;
+}
+
+.menu-categorias button::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 25%;
+    height: 50%;
+    width: 1px;
+    background-color: #dcdcdc;
+}
+
+.menu-categorias button:last-child::after { display: none; }
+
+.menu-categorias button:hover {
+    color: #999;
+    transform: translateY(-2px);
+}
+
+.menu-categorias button.active-cat {
+    color: #000;
+    font-weight: 900;
+}
+
+/* --- MODO GALERÍA (Cambios cuando sube el menú) --- */
+
+#app-container.modo-galeria #vista-inicio {
+    justify-content: flex-start;
+    height: auto;
+    padding: 20px 40px;
+    border-bottom: 1px solid #ddd;
+}
+
+#app-container.modo-galeria .logo-v { display: none; }
+#app-container.modo-galeria .logo-h {
+    display: block;
+    width: 250px; /* Ajustado para que no ocupe tanto arriba */
+}
+
+#app-container.modo-galeria .menu-categorias button {
+    padding: 10px 15px;
+    font-size: 1.1rem;
+}
+
+/* --- VISTA GALERÍA (VISOR) --- */
+#vista-galeria {
+    flex: 1;
+    width: 100%;
+    padding: 30px 40px;
+    overflow-y: auto;
+    display: none; /* Se activa con .active */
+}
+
+#vista-galeria.active { display: block; }
+
+#visor-producto {
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 0;
+    transition: opacity 0.3s ease;
+}
+
+.pagina-producto {
+    display: flex;
+    width: 95%;
+    max-width: 1100px;
+    background: white;
+    box-shadow: 5px -5px 15px rgba(0, 0, 0, 0.08);
+    align-items: stretch;
+    margin: auto;
+    height: auto;
+    overflow: visible;
+}
+
+.seccion-foto { 
+    flex: 1.2;
+    height: 500px;
+    background-color: white;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.seccion-foto img { 
+    width: 100%; 
+    height: 100%; 
+    object-fit: contain;
+    transition: transform 0.5s ease;
+}
+
+.seccion-info {
+    flex: 1;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+}
+
+.seccion-info h2 { font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 10px; }
+.divisor-elegante { width: 40px; border: 1px solid #333; margin: 20px 0; }
+.precio { font-size: 1.5rem; font-weight: bold; margin-top: 20px; }
+
+#pasar-pagina {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    background: white;
+    padding: 10px 20px;
+    border-radius: 50px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+#boton-home {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    cursor: pointer;
+    z-index: 100;
+}
