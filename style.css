@@ -1,6 +1,10 @@
 /* --- ESTILOS GENERALES Y RESET --- */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
+:root {
+    color-scheme: light;
+}
+
 body { 
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     overflow: hidden;
