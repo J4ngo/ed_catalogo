@@ -1,4 +1,4 @@
-const CACHE_NAME = 'exclusive-decor-v2';
+const CACHE_NAME = 'exclusive-decor-v3';
 // Archivos básicos para que la web abra
 const assets = [
   './',
