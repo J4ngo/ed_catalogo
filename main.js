@@ -17,7 +17,7 @@ const URL_EXCEL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRV8YzgaJZ4fd
 // --- NUEVO: Función para cargar los datos al abrir la web ---
 async function cargarDatosExcel() {
     try {
-        const respuesta = await fetch(URL_EXCEL);
+        const respuesta = await fetch(`${URL_EXCEL}&cacheBuster=${new Date().getTime()}`);
         const data = await respuesta.text();
         
         // Convertimos el CSV a objetos
