@@ -36,10 +36,16 @@
         </section>
 
         <section id="vista-galeria" class="vista oculto">
+            <!-- Boton Anterior -->
+            <div id="retroceder-pagina" onclick="productoAnterior">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+                <span>Anterior</span>
+            </div>
+            
             <!-- AQUÍ SE CARGA EL PRODUCTO -->
             <div id="visor-producto"></div>
 
-            <!-- Botón Siguiente -->
+            <!-- Boton Siguiente -->
             <div id="pasar-pagina" onclick="siguienteProducto()">
                 <span>Siguiente</span>
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
