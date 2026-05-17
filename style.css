@@ -135,9 +135,11 @@ body {
     padding: 30px 40px;
     overflow-y: auto;
     display: none; /* Se activa con .active */
+    align-items: center;
+    justify-content: space-between;
 }
 
-#vista-galeria.active { display: block; }
+#vista-galeria.active { display: flex; }
 
 #visor-producto {
     min-height: 70vh;
@@ -203,6 +205,23 @@ body {
     padding: 10px 20px;
     border-radius: 50px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+#retroceder-pagina {
+    position: fixed;
+    bottom: 40px;
+    left: 40px; /* Al revés que el de pasar página */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    background: white;
+    padding: 10px 20px;
+    border-radius: 50px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: opacity 0.3s ease; /* Opcional: para que quede fino al pulsar */
 }
 
 #boton-home {
