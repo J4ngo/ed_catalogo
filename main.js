@@ -119,3 +119,16 @@ function siguienteProducto() {
         visor.style.opacity = 1;
     }, 300);
 }
+
+function retrocederProducto() {
+    // 1. Restamos uno al índice para ir al producto anterior
+    indiceActual--;
+
+    // 2. Control de seguridad: si bajamos de 0, saltamos al final del catálogo
+    if (indiceActual < 0) {
+        indiceActual = productosActuales.length - 1;
+    }
+
+    // 3. Volvemos a pintar el producto que corresponde en el visor
+    renderizarProducto();
+}
