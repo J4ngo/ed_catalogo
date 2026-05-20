@@ -25,12 +25,27 @@ async function cargarDatosExcel() {
         TODOS_LOS_PRODUCTOS = filas.map(fila => {
             // Usamos una expresión regular para separar por comas (por si hay comas dentro de descripciones)
             const c = fila.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/); 
+            
+            // --- FILTRO INTELIGENTE PARA LA IMAGEN ---
+            // 1. Limpiamos posibles comillas y espacios en blanco del enlace/archivo
+            let rutaImagen = c[4]?.trim()?.replace(/"/g, "") || "";
+            let imagenFinal = "";
+
+            // 2. Si empieza por http o https, es un enlace directo de ImgBB
+            if (rutaImagen.startsWith("http://") || rutaImagen.startsWith("https://")) {
+                imagenFinal = rutaImagen;
+            } else {
+                // Si no, es una foto de tu repositorio local
+                imagenFinal = `img/${rutaImagen}`;
+            }
+            // -----------------------------------------
+
             return {
                 id: c[0]?.trim(),
                 nombre: c[1]?.trim(),
                 precio: c[2]?.trim(),
                 categoria: c[3]?.trim(),
-                imagen: `img/${c[4]?.trim()}`,
+                imagen: imagenFinal, // Usamos el resultado del filtro inteligente
                 descripcion: c[5]?.trim()?.replace(/"/g, "") // Limpiamos comillas si las hay
             };
         });
