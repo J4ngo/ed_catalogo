@@ -231,3 +231,35 @@ body {
     cursor: pointer;
     z-index: 100;
 }
+
+/* Contenedor de la foto */
+.contenedor-foto-carrusel {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    max-width: 450px; /* Ajustalo al tamaño que uses para tus fotos */
+    margin: 0 auto;
+}
+
+/* Estilo común de las flechas */
+.flecha-interna {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(255, 255, 255, 0.7);
+    border: none;
+    font-size: 22px;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 50%;
+    z-index: 5;
+    transition: background 0.2s;
+}
+
+.flecha-interna:hover {
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+/* Posiciones */
+.flecha-interna.prev { left: 10px; }
+.flecha-interna.next { right: 10px; }
