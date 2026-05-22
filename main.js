@@ -6,6 +6,7 @@ if ('serviceWorker' in navigator) {
   });
 }
 
+let indiceFotoInterna = 0; // Controla qué foto del carrusel se está mostrando
 const appContainer = document.getElementById('app-container');
 let productosActuales = [];
 let indiceActual = 0;
@@ -106,11 +107,33 @@ function renderizarProducto() {
         return;
     }
 
+    // 1. Control del carrusel: si entramos a un producto nuevo, reseteamos a la primera foto
+    if (!window.cambiandoFotoInterna) {
+        indiceFotoInterna = 0;
+    }
+    window.cambiandoFotoInterna = false; // Reseteamos el chivato
+
+    // 2. Convertimos el campo de la imagen en un Array usando el separador '|'
+    const imagenes = p.imagen.split('|').map(img => img.trim());
+    const fotoActual = imagenes[indiceFotoInterna]; // Cogemos la foto que toca mostrar
+
+    // 3. Si hay más de una foto en el Excel para este producto, creamos las flechas flotantes
+    let flechasHTML = '';
+    if (imagenes.length > 1) {
+        flechasHTML = `
+            <button class="flecha-interna prev" onclick="pasarFotoInterna(-1, ${imagenes.length})">&#10094;</button>
+            <button class="flecha-interna next" onclick="pasarFotoInterna(1, ${imagenes.length})">&#10095;</button>
+        `;
+    }
+
+    // 4. Inyectamos tu HTML manteniendo tus clases intactas
     contenedor.innerHTML = `
         <div class="pagina-producto">
-            <div class="seccion-foto">
-                <img src="${p.imagen}" alt="${p.nombre}">
+            <div class="seccion-foto" style="position: relative; display: inline-block;">
+                ${flechasHTML}
+                <img src="${fotoActual}" alt="${p.nombre}">
             </div>
+            
             <div class="seccion-info">
                 <span class="numero-pag">${indiceActual + 1} / ${productosActuales.length}</span>
                 <h2>${p.nombre}</h2>
@@ -146,4 +169,18 @@ function retrocederProducto() {
 
     // 3. Volvemos a pintar el producto que corresponde en el visor
     renderizarProducto();
+}
+
+function pasarFotoInterna(direccion, totalFotos) {
+    window.cambiandoFotoInterna = true; // Avisamos que no queremos resetear la foto al renderizar
+    indiceFotoInterna += direccion;
+
+    // Bucle continuo para las fotos
+    if (indiceFotoInterna < 0) {
+        indiceFotoInterna = totalFotos - 1;
+    } else if (indiceFotoInterna >= totalFotos) {
+        indiceFotoInterna = 0;
+    }
+
+    renderizarProducto(); // Volvemos a pintar
 }
