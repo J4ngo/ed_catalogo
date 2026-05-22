@@ -47,7 +47,7 @@ async function cargarDatosExcel() {
                 precio: c[2]?.trim(),
                 categoria: c[3]?.trim(),
                 imagen: imagenFinal, // Usamos el resultado del filtro inteligente
-                descripcion: c[5]?.trim()?.replace(/"/g, "") // Limpiamos comillas si las hay
+                descripcion: c[5]?.trim()?.replace(/"/g, ""), // Limpiamos comillas si las hay
                 tamanos: c[6]?.trim() || ""
             };
         });
