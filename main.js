@@ -48,6 +48,7 @@ async function cargarDatosExcel() {
                 categoria: c[3]?.trim(),
                 imagen: imagenFinal, // Usamos el resultado del filtro inteligente
                 descripcion: c[5]?.trim()?.replace(/"/g, "") // Limpiamos comillas si las hay
+                tamanos: c[6]?.trim() || ""
             };
         });
         console.log("Catálogo actualizado desde Excel");
@@ -107,17 +108,21 @@ function renderizarProducto() {
         return;
     }
 
-    // 1. Control del carrusel: si entramos a un producto nuevo, reseteamos a la primera foto
-    if (!window.cambiandoFotoInterna) {
-        indiceFotoInterna = 0;
+    // [Control de la Parte 1] Reseteo de fotos
+    if (!window.cambiandoFotoInterna) { indiceFotoInterna = 0; }
+    window.cambiandoFotoInterna = false;
+
+    // [Control de la Parte 2] Reseteo de tamaños
+    // Si el usuario cambia de producto entero, volvemos a seleccionar el primer tamaño (índice 0)
+    if (!window.cambiandoTamanoInterno) {
+        indiceTamanoSeleccionado = 0;
     }
-    window.cambiandoFotoInterna = false; // Reseteamos el chivato
+    window.cambiandoTamanoInterno = false; // Reseteamos el chivato
 
-    // 2. Convertimos el campo de la imagen en un Array usando el separador '|'
+    // Procesamos las imágenes (Parte 1)
     const imagenes = p.imagen.split('|').map(img => img.trim());
-    const fotoActual = imagenes[indiceFotoInterna]; // Cogemos la foto que toca mostrar
+    const fotoActual = imagenes[indiceFotoInterna];
 
-    // 3. Si hay más de una foto en el Excel para este producto, creamos las flechas flotantes
     let flechasHTML = '';
     if (imagenes.length > 1) {
         flechasHTML = `
@@ -126,7 +131,32 @@ function renderizarProducto() {
         `;
     }
 
-    // 4. Inyectamos tu HTML manteniendo tus clases intactas
+    // --- NUEVA LÓGICA: PROCESAR TAMAÑOS Y PRECIOS ---
+    // 1. Convertimos los precios y tamaños del Excel en Arrays
+    const listaPrecios = p.precio.split('|').map(pr => pr.trim());
+    // Suponiendo que los tamaños vienen en la columna 7 (c[7]). Asegúrate de mapearla en tu cargarDatosExcel
+    const listaTamanos = p.tamanos ? p.tamanos.split('|').map(t => t.trim()) : [];
+
+    // 2. Elegimos qué precio mostrar en base al botón que esté pulsado
+    const precioActual = listaPrecios[indiceTamanoSeleccionado] || listaPrecios[0];
+
+    // 3. Si el producto TIENE tamaños en el Excel, fabricamos los botones
+    let botonesTamanosHTML = '';
+    if (listaTamanos.length > 0 && listaTamanos[0] !== "") {
+        botonesTamanosHTML = `<div class="contenedor-tamanos">`;
+        listaTamanos.forEach((tamano, index) => {
+            // Si es el tamaño seleccionado, le añadimos la clase 'activo' para que resalte
+            const claseActivo = index === indiceTamanoSeleccionado ? 'activo' : '';
+            botonesTamanosHTML += `
+                <button class="btn-tamano ${claseActivo}" onclick="cambiarTamano(${index})">
+                    ${tamano}
+                </button>
+            `;
+        });
+        botonesTamanosHTML += `</div>`;
+    }
+
+    // 4. Inyectamos el HTML final en tu estructura elegante
     contenedor.innerHTML = `
         <div class="pagina-producto">
             <div class="seccion-foto" style="position: relative; display: inline-block;">
@@ -139,7 +169,10 @@ function renderizarProducto() {
                 <h2>${p.nombre}</h2>
                 <hr class="divisor-elegante">
                 <p class="descripcion">${p.descripcion}</p>
-                <p class="precio">${p.precio}€</p>
+                
+                ${botonesTamanosHTML}
+                
+                <p class="precio">${precioActual}€</p>
             </div>
         </div>
     `;
@@ -183,4 +216,11 @@ function pasarFotoInterna(direccion, totalFotos) {
     }
 
     renderizarProducto(); // Volvemos a pintar
+}
+
+function cambiarTamano(nuevoIndice) {
+    window.cambiandoTamanoInterno = true; // Chivato para que no se resetee el tamaño al repintar
+    indiceTamanoSeleccionado = nuevoIndice; // Guardamos la posición (0, 1, 2...)
+    
+    renderizarProducto(); // Volvemos a pintar el visor con el nuevo precio
 }
